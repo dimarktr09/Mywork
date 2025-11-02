@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎉 MyFunApp.com 🎨</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      color: #fff;
+      margin-top: 40px;
+      text-shadow: 2px 2px 4px #000;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 18px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
+      background-color: rgba(255,255,255,0.8);
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      opacity: 0.9;
+    }
+
+    #message {
+      margin-top: 30px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 1px 1px 3px #000;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎨 Welcome to MyFunApp.com 🎉</h1>
+
+  <button onclick="showRandomMessage()">Click Me!</button>
+  <button onclick="playSound()">Sound Effect 🔊</button>
+
+  <p id="message"></p>
+
+  <canvas id="canvas"></canvas>
+
+  <script>
+    // ----- Random Messages -----
+    function showRandomMessage() {
+      const messages = [
+        "You're amazing! 🌟",
+        "Keep coding! 💻",
+        "JS is magic! ✨",
+        "TrebEdit rocks! 🚀",
+        "Fun times! 🎉"
+      ];
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById('message').innerText = randomMessage;
+    }
+
+    // ----- Sound Effect -----
+    const audio = new Audio('https://www.soundjay.com/button/sounds/button-16.mp3');
+    function playSound() {
+      audio.play();
+    }
+
+    // ----- Bouncing Circles -----
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let circles = [];
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Circle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.radius = Math.random() * 20 + 10;
+        this.dx = (Math.random() - 0.5) * 4;
+        this.dy = (Math.random() - 0.5) * 4;
+        this.color = `hsl(${Math.random()*360}, 80%, 60%)`;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+      update() {
+        if (this.x + this.radius > canvas.width || this.x - this.radius < 0) this.dx *= -1;
+        if (this.y + this.radius > canvas.height || this.y - this.radius < 0) this.dy *= -1;
+        this.x += this.dx;
+        this.y += this.dy;
+        this.draw();
+      }
+    }
+
+    for(let i=0; i<50; i++) {
+      circles.push(new Circle());
+    }
+
+    function animate() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      circles.forEach(circle => circle.update());
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+
+</body>
+</html>
